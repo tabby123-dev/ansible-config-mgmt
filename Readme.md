@@ -14,7 +14,7 @@ repository to UAT web servers.
 - Defines development and UAT hosts in Ansible inventory files.
 - Installs or removes Wireshark on the `nfs` and `web` groups.
 - Creates a temporary directory and file, configures the timezone to
-  `Africa/Nairobi`, and reports basic server information.
+  `Africa/Nairobi`, and run a script remotely that reports basic server information.
 - Installs Apache and Git on UAT hosts, clones the
   `tabby123-dev/tooling-solution` repository, and copies its HTML content to
   Apache's document root.
