@@ -1,0 +1,36 @@
+---
+- name: Install and configure apache2
+  apt:
+    name: apache2
+    state: present
+  become: yes
+- name: install git
+  apt:
+    name: git
+    state: present
+  become: yes
+- name: Clone tooling website from github
+  become: yes
+  ansible.builtin.git:
+    repo: 'https://github.com/tabby123-dev/tooling-solution.git'
+    dest: /var/www/tooling
+    version: main
+- name: copy html content to one level up
+  become: yes
+  ansible.builtin.copy:
+    src: /var/www/tooling/html/
+    dest: /var/www/html/
+    remote_src: yes
+    owner: www-data
+    group: www-data
+    mode: '0755'
+- name: Start serveice apache2
+  service:
+    name: apache2
+    state: started
+    enabled: yes
+- name: recursively remove /var/www/html/html directory
+  become: yes
+  ansible.builtin.file:
+    path: /var/www/html/html
+    state: absent
