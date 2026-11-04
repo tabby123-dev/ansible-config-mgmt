@@ -148,9 +148,9 @@ ansible-galaxy init webserver
 ![run the playbook](images/uatserver.png)
 The role uses fixed paths and follows the mutable `main` branch.Also, the play does not enable privilege escalation globally while several role tasks explicitly use `become`, the service and cleanup tasks do not. Configure privilege escalation for those tasks or the play if the remote connection user is not root.
 
-Verify form the Load balance ryou can access the website.
+### Verify form the Load balance ryou can access the website.
 
-![run the playbook](images/server.png)
+![Live Application](images/server.png)
 
 
 ## Validation and operational notes
