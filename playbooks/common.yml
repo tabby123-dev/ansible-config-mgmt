@@ -7,3 +7,24 @@
     yum:
       name: wireshark
       state: present
+  - name: create a directory and file inside it
+    ansible.builtin.file:
+      path: /tmp/test_directory
+      state: directory
+  - name: create a file inside the directory
+    ansible.builtin.file:
+      path: /tmp/test_directory/test_file.txt
+      state: touch
+  - name: Display cureent time zone
+    ansible.builtin.debug:
+      msg: "{{ inventory_hostname }} Current timezone is {{ ansible_date_time.tz }}"
+  - name: check and change timezone on all servers
+    ansible.builtin.command: timedatectl set-timezone Africa/Nairobi
+  - name: Execute server information script
+    ansible.builtin.script:
+      cmd: /home/opc/ansible-config-mgmt/scripts/server-info.sh
+    register: script_output
+  - name: Display script output
+    ansible.builtin.debug:
+      var: script_output.stdout
+
