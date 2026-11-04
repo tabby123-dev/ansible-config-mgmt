@@ -1,12 +1,11 @@
 # Ansible Configuration Management
-
+# Ansible Static Roles with Jenkins and GitHub
 Ansible project for managing Linux hosts over SSH. It includes a small
 environment inventory, a playbook for common host maintenance, and a role
 that installs Apache and publishes the HTML content of a separate website
 repository to UAT web servers.
-# Ansible Static Roles Configuration Management with Jenkins and GitHub
-> **DevOps Portfolio Project,Configuration
-> Management & CI/CD**
+
+![Project Architecture](images/architecture.png)
 ------------------------------------------------------------------------
 
 ## What this repository does
