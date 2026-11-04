@@ -145,6 +145,7 @@ ansible-galaxy init webserver
 4. Starts and enables the Apache service.
 5. Removes `/var/www/html/html` if it exists.
 
+![run the playbook](images/uatserver.png)
 The role uses fixed paths and follows the mutable `main` branch.Also, the play does not enable privilege escalation globally while several role tasks explicitly use `become`, the service and cleanup tasks do not. Configure privilege escalation for those tasks or the play if the remote connection user is not root.
 
 
