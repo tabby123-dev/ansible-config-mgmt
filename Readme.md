@@ -3,7 +3,8 @@
 Ansible project for managing Linux hosts over SSH. It includes a small
 environment inventory, a playbook for common host maintenance, and a role
 that installs Apache and publishes the HTML content of a separate website
-repository to UAT web servers.
+repository to UAT/Dev web servers.
+### For the tasks linux/ubuntu servers were used instead of RHEL8 due to cost consideration on cloud.
 
 ![Project Architecture](images/architecture.png)
 ------------------------------------------------------------------------
