@@ -22,68 +22,6 @@ repository to UAT web servers.
 ## Repository layout
 
 ```text
-.
-A linux  server was configured as the **Ansible control node**. SSH
-key-based authentication was established between the control node and
-the managed servers, allowing Ansible to remotely execute configuration
-tasks.
-
-The Ansible project was organized into separate `inventory` and
-`playbooks` `role` and `static assignements` directories. A development inventory file was created to
-define the remote hosts, while multiple Ansible playbooks were developed
-to automate:
-
--   Installation and uninstallation of Wireshark.
--   Creation of a directory and file on a remote server.
--   Configuration of the server timezone to `Africa/Nairobi`.
-
-The project was then integrated with a **GitHub repository and
-Jenkins**. A GitHub webhook was configured so that a repository change
-can trigger the Jenkins job automatically.
-
-------------------------------------------------------------------------
-
-# Architecture
-
-## High-Level Architecture
-
-The architecture consists of a developer workstation, GitHub,
-Jenkins/Ansible control node, and multiple managed servers.
-
-![Project Architecture](images/architecture.png)
-
-### Architecture Components
-
-  -----------------------------------------------------------------------
-  Component                           Role
-  ----------------------------------- -----------------------------------
-  **Developer PC**                        Used to create and modify Ansible
-                                      automation code
-
-  **GitHub**                              Version control and central
-                                      repository for the automation code
-
-  **GitHub Webhook**                      Sends an event to Jenkins when
-                                      repository changes occur
-
-  **Jenkins**                             Automates the CI/CD execution
-                                      workflow
-
-  **Ansible Control Node**              Executes playbooks against managed
-                                      servers
-
-  **Ansible Inventory**                 Defines and groups the managed
-                                      hosts
-
-  **SSH**                                 Secure communication between the
-                                      control node and managed servers
-
-  **RHEL 8 Servers**                      Remote servers managed by Ansible
-
-  **Ubuntu Server**                      Remote development
-                                      server/load-balancer environment
-  -----------------------------------------------------------------------
-
 # Repository Structure
 
 The Ansible project is organized to separate inventory configuration
