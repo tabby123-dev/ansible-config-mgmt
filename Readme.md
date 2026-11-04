@@ -1,32 +1,6 @@
-# Ansible Configuration Management with Jenkins and GitHub
-Added a branch
+# Ansible Static Roles Configuration Management with Jenkins and GitHub
 > **DevOps Portfolio Project,Configuration
 > Management & CI/CD**
-
-## Table of Contents
-
--   [Project Overview](#project-overview)
--   [Project Objectives](#project-objectives)
--   [Architecture](#architecture)
--   [Technology Stack](#technology-stack)
--   [Repository Structure](#repository-structure)
--   [Implementation](#implementation)
-    -   [1. Ansible Control Node](#1-ansible-control-node)
-    -   [2. SSH Key-Based
-        Authentication](#2-ssh-key-based-authentication)
-    -   [3. Ansible Inventory](#3-ansible-inventory)
-    -   [4. Ansible Playbooks](#4-ansible-playbooks)
--   [Testing and Validation](#testing-and-validation)
--   [CI/CD Pipeline](#cicd-pipeline)
--   [GitHub Webhook Integration](#github-webhook-integration)
--   [Jenkins Automation](#jenkins-automation)
--   [Security](#security)
--   [Project Workflow](#project-workflow)
--   [Challenges and Troubleshooting](#challenges-and-troubleshooting)
--   [Lessons Learned](#lessons-learned)
--   [Future Improvements](#future-improvements)
--   [Conclusion](#conclusion)
-
 ------------------------------------------------------------------------
 
 ## Project Overview
@@ -37,49 +11,23 @@ configuration management solution integrated with GitHub and Jenkins**.
 The primary goal was to automate common Linux server administration
 tasks instead of performing them manually on each remote server.
 
-An Ubuntu server was configured as the **Ansible control node**. SSH
+A linux  server was configured as the **Ansible control node**. SSH
 key-based authentication was established between the control node and
 the managed servers, allowing Ansible to remotely execute configuration
 tasks.
 
 The Ansible project was organized into separate `inventory` and
-`playbooks` directories. A development inventory file was created to
+`playbooks` `role` and `static assignements` directories. A development inventory file was created to
 define the remote hosts, while multiple Ansible playbooks were developed
 to automate:
 
--   Installation of Wireshark.
+-   Installation and uninstallation of Wireshark.
 -   Creation of a directory and file on a remote server.
 -   Configuration of the server timezone to `Africa/Nairobi`.
 
 The project was then integrated with a **GitHub repository and
 Jenkins**. A GitHub webhook was configured so that a repository change
 can trigger the Jenkins job automatically.
-
-The resulting workflow demonstrates a practical **Infrastructure as Code
-(IaC) and CI/CD approach to configuration management**.
-
-------------------------------------------------------------------------
-
-## Project Objectives
-
-The project was designed to achieve the following objectives:
-
-1.  Configure an Ansible server to act as a control node.
-2.  Establish SSH connectivity between the control node and remote Linux
-    servers.
-3.  Configure passwordless/key-based SSH authentication for automation.
-4.  Create an Ansible inventory for development servers.
-5.  Develop reusable Ansible playbooks for common server administration
-    tasks.
-6.  Automate software installation across remote servers.
-7.  Automate filesystem configuration.
-8.  Automate timezone configuration.
-9.  Store infrastructure automation code in GitHub.
-10. Integrate GitHub with Jenkins using a webhook.
-11. Automatically trigger Jenkins when changes are pushed to the
-    repository.
-12. Demonstrate an end-to-end automated configuration management
-    workflow.
 
 ------------------------------------------------------------------------
 
