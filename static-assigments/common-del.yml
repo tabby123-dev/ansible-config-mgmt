@@ -1,0 +1,9 @@
+---
+- name: update web nfs server
+  hosts: nfs, web
+  become: true
+  tasks:
+  - name: install ensure wireshirk is installed
+    yum:
+      name: wireshark
+      state: absent
