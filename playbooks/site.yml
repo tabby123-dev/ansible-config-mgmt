@@ -1,2 +1,15 @@
 ---
-- import_playbook: ../static-assigments/uat-webservers.yml
+- hosts: all
+  name: Include dynamic variables
+  tasks:
+    - name: Import common playbook
+      import_playbook: ../static-assignments/common.yml
+
+    - name: Include environment variables
+      include_vars: ../dynamic-assignments/env-vars.yml
+      tags:
+        - always
+
+- hosts: web
+  name: Webserver assignments
+  import_playbook: ../static-assignments/uat-webservers.yml
