@@ -1,0 +1,24 @@
+---
+# MySQL root configuration
+mysql_root_password: "{{ vault_mysql_root_password }}"
+
+# Network configuration
+mysql_bind_address: "0.0.0.0"
+mysql_port: "3306"
+
+# MySQL service
+mysql_enabled_on_startup: true
+
+# Tooling website database
+mysql_databases:
+  - name: tooling
+    encoding: utf8mb4
+    collation: utf8mb4_unicode_ci
+
+# Tooling website database user
+mysql_users:
+  - name: webaccess
+    host: "10.0.1.%"
+    password: "{{ vault_mysql_webaccess_password }}"
+    priv: "tooling.*:ALL"
+    state: present

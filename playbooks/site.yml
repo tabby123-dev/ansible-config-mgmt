@@ -1,6 +1,8 @@
 ---
 - name: Import common playbook
   ansible.builtin.import_playbook: ../static-assignments/common.yml
+- name: Configure database
+  ansible.builtin.import_playbook: database.yml
 
 - name: Configure webservers
   hosts: web
