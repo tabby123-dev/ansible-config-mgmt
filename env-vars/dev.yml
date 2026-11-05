@@ -1,0 +1,2 @@
+[db]
+10.0.1.29 ansible_ssh_user=opc ansible_ssh_private_key_file=/home/opc/private.key

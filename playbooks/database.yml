@@ -1,0 +1,9 @@
+---
+- name: Configure MySQL for Tooling Website
+  hosts: db
+  become: true
+
+  tasks:
+    - name: Install and configure MySQL
+      ansible.builtin.include_role:
+        name: mysql

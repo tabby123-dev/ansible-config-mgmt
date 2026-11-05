@@ -1,15 +1,17 @@
 ---
-- hosts: all
-  name: Include dynamic variables
+- name: Import common playbook
+  ansible.builtin.import_playbook: ../static-assignments/common.yml
+- name: Configure database
+  ansible.builtin.import_playbook: database.yml
+
+- name: Configure webservers
+  hosts: web
+  become: true
+
   tasks:
-    - name: Import common playbook
-      import_playbook: ../static-assignments/common.yml
-
     - name: Include environment variables
-      include_vars: ../dynamic-assignments/env-vars.yml
-      tags:
-        - always
+      ansible.builtin.include_vars:
+        file: ../env-vars/dev.yml
 
-- hosts: web
-  name: Webserver assignments
-  import_playbook: ../static-assignments/uat-webservers.yml
+    - name: Import webserver configuration
+      ansible.builtin.import_tasks: ../static-assignments/uat-webservers.yml
