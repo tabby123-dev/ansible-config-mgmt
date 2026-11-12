@@ -6,7 +6,7 @@ Automate a PHP Tooling application  using **static Ansible imports**, **dynamic 
 
 ## 1. Architecture and current state
 
-![Original reference architecture](screenshots/architecture.jpeg)
+![Original reference architecture](screenshot/architecture.jpeg)
 
 | Host | OS | Private IP | Function |
 |---|---|---|---|
@@ -37,7 +37,7 @@ ansible-config-mgmt/
 └── dynamic-assignment/
     ├── ansible.cfg
     ├── inventory/hosts.ini
-    ├── group_vars/               # historical UAT/prod exercises
+    ├── group_vars/             
     ├── roles/
     │   ├── common/tasks/main.yml
     │   ├── tooling_web/tasks/main.yml
@@ -163,7 +163,7 @@ The custom `tooling_web` role verifies  Linux 8, ensures `httpd` and `git`, chec
   ansible.builtin.git:
     repo: "{{ tooling_repo }}"
     dest: /opt/tooling-source
-    version: "{{ tooling_version }}"   # production: pinned tag or commit
+    version: "{{ tooling_version }}"  
     update: true
     force: false
 
@@ -175,9 +175,9 @@ The custom `tooling_web` role verifies  Linux 8, ensures `httpd` and `git`, chec
     mode: '0644'
 ```
 
-![Successful dynamic role checkout](screenshots/main.jpeg)
+![Successful dynamic role checkout](screenshot/main.jpeg)
 
-![PHP and application inspection](screenshots/php.jpeg)
+![PHP and application inspection](screenshot/php.jpeg)
 
 
 ##  MySQL, NFS and community roles
@@ -268,7 +268,7 @@ done
 ansible webservers -b -m ansible.builtin.shell \
   -a 'grep -h "lbtest=oci2026-" /var/log/httpd/*access* 2>/dev/null | grep -c "10.0.1.64" || true'
 ```
-![Successful we request](screenshots/webreq.jpeg)
+![Successful we request](screenshot/webreq.jpeg)
 
 Web1's virtual host writes to **`/var/log/httpd/myapp_access.log`**.
 
@@ -281,6 +281,6 @@ ansible LoadBalancer -b -m ansible.builtin.command -a 'systemctl is-active hapro
 ansible LoadBalancer -b -m ansible.builtin.command -a 'haproxy -c -f /etc/haproxy/haproxy.cfg'
 curl -sS -o /dev/null -w '%{http_code}\n' http://10.0.1.64:8081/login.php
 ```
-![Successful web](screenshots/web.jpeg)
+![Successful web](screenshot/web.jpeg)
 
 
