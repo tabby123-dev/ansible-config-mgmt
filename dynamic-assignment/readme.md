@@ -10,10 +10,10 @@ Automate a PHP Tooling application  using **static Ansible imports**, **dynamic 
 
 | Host | OS | Private IP | Function |
 |---|---|---|---|
-| Jenkins controller | Oracle Linux 9.8 | `10.0.0.166` | Jenkins, Git, Ansible Core 2.14.18 |
-| Web1 | Oracle Linux 8.10 | `10.0.1.229` | Apache, PHP, Tooling backend |
-| Web2 | Oracle Linux 8.10 | `10.0.1.136` | Apache, PHP, Tooling backend |
-| db-server | Oracle Linux 9.8 | `10.0.1.29` | **MySQL 8.0.46** and NFSv4.2 server |
+| Jenkins controller |  Linux 9.8 | `10.0.0.166` | Jenkins, Git, Ansible Core 2.14.18 |
+| Web1 |  Linux 8.10 | `10.0.1.229` | Apache, PHP, Tooling backend |
+| Web2 |  Linux 8.10 | `10.0.1.136` | Apache, PHP, Tooling backend |
+| db-server | Linux 9.8 | `10.0.1.29` | **MySQL 8.0.46** and NFSv4.2 server |
 | LoadBalancer | Ubuntu 22.04 | `10.0.1.64` | HAProxy `:8081`; existing Apache `:80` |
 
 ```text
@@ -155,9 +155,9 @@ ansible-playbook new-dynamictask/static-role.yml
 ansible-playbook new-dynamictask/deploy-tooling.yml --limit Web1 --check
 ```
 
-## Tooling application deployment (NFS-aware)
+## Tooling application deployment (NFS)
 
-The custom `tooling_web` role verifies Oracle Linux 8, ensures `httpd` and `git`, checks out `tooling-solution` to `/opt/tooling-source`, and publishes selected files from `html/` to `/var/www/html`.
+The custom `tooling_web` role verifies  Linux 8, ensures `httpd` and `git`, checks out `tooling-solution` to `/opt/tooling-source`, and publishes selected files from `html/` to `/var/www/html`.
 ```yaml
 - name: Checkout Tooling source
   ansible.builtin.git:
@@ -180,9 +180,9 @@ The custom `tooling_web` role verifies Oracle Linux 8, ensures `httpd` and `git`
 ![PHP and application inspection](screenshots/php.jpeg)
 
 
-## 6. MySQL, NFS and community roles
+##  MySQL, NFS and community roles
 
-- Actual DB engine: **MySQL 8.0.46** (`mysqld`). NFS service is active on the same Oracle Linux 9 VM.
+- Actual DB engine: **MySQL 8.0.46** (`mysqld`). NFS service is active on the same  Linux 9 VM.
 - Both web hosts mount `10.0.1.29:/mnt/apps` on `/var/www` (NFSv4.2). MySQL TCP 3306 was reachable from Web1;
 - `geerlingguy.mysql` **6.5.0** was installed and discovered.
 
@@ -259,7 +259,6 @@ ansible LoadBalancer -b -m ansible.builtin.command -a 'haproxy -c -f /etc/haprox
 curl -sS -o /dev/null -w 'HTTP %{http_code}\n' http://10.0.1.64:8081/login.php
 ```
 
-**Observed:** HAProxy deployment `ok=6 changed=3 failed=0`; localhost HTTP 200; after a host-firewall adjustment, Jenkins → HAProxy HTTP 200; **20/20** test requests returned HTTP 200. Round-robin distribution **still requires a per-backend count**; successful requests alone do not prove both nodes were selected. `/login.php` is a basic HTTP check, not a complete DB health check. Verify session sharing/stickiness and use HTTPS for real users.
 
 ```bash
 # Generate identifiable requests, then count on BOTH backends
@@ -269,9 +268,9 @@ done
 ansible webservers -b -m ansible.builtin.shell \
   -a 'grep -h "lbtest=oci2026-" /var/log/httpd/*access* 2>/dev/null | grep -c "10.0.1.64" || true'
 ```
+![Successful we request](screenshots/webreq.jpeg)
 
-Web1's virtual host writes to **`/var/log/httpd/myapp_access.log`**, not the generic `access_log`; this caused an initially misleading empty log. Use the actual configured `CustomLog` location on each server.
-
+Web1's virtual host writes to **`/var/log/httpd/myapp_access.log`**.
 
 
 ```bash
@@ -282,11 +281,6 @@ ansible LoadBalancer -b -m ansible.builtin.command -a 'systemctl is-active hapro
 ansible LoadBalancer -b -m ansible.builtin.command -a 'haproxy -c -f /etc/haproxy/haproxy.cfg'
 curl -sS -o /dev/null -w '%{http_code}\n' http://10.0.1.64:8081/login.php
 ```
-
-
-   
-
-
-
+![Successful web](screenshots/web.jpeg)
 
 
