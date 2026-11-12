@@ -1,0 +1,5 @@
+---
+tooling_role: tooling_web
+tooling_environment: uat
+tooling_version: main
+tooling_database: tooling_uat

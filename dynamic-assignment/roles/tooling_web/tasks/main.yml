@@ -1,0 +1,89 @@
+---
+- name: Verify operating system
+  ansible.builtin.assert:
+    that:
+      - ansible_distribution == "OracleLinux"
+      - ansible_distribution_major_version == "8"
+    fail_msg: "This role requires Oracle Linux 8"
+
+- name: Install Apache and Git
+  ansible.builtin.dnf:
+    name:
+      - httpd
+      - git
+    state: present
+
+- name: Ensure Apache is running
+  ansible.builtin.service:
+    name: httpd
+    state: started
+    enabled: true
+
+- name: Create application checkout directory
+  ansible.builtin.file:
+    path: /opt/tooling-source
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Clone Tooling application
+  ansible.builtin.git:
+    repo: "{{ tooling_repo }}"
+    dest: /opt/tooling-source
+    version: "{{ tooling_version }}"
+    update: true
+    force: false
+  register: tooling_checkout
+
+- name: Display checked-out version
+  ansible.builtin.debug:
+    msg: >-
+      {{ inventory_hostname }} checked out
+      {{ tooling_version }} at
+      {{ tooling_checkout.after | default('unknown') }}
+
+- name: Find application directories
+  ansible.builtin.find:
+    paths: /opt/tooling-source/html
+    recurse: true
+    file_type: directory
+  register: tooling_directories
+
+- name: Create application subdirectories
+  ansible.builtin.file:
+    path: >-
+      {{ tooling_deploy_path }}/{{ item.path |
+      regex_replace('^/opt/tooling-source/html/', '') }}
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  loop: "{{ tooling_directories.files }}"
+  loop_control:
+    label: "{{ item.path }}"
+
+- name: Find application files
+  ansible.builtin.find:
+    paths: /opt/tooling-source/html
+    recurse: true
+    file_type: file
+  register: tooling_files
+
+- name: Deploy Tooling application files
+  ansible.builtin.copy:
+    src: "{{ item.path }}"
+    dest: >-
+      {{ tooling_deploy_path }}/{{ item.path |
+      regex_replace('^/opt/tooling-source/html/', '') }}
+    remote_src: true
+    owner: root
+    group: root
+    mode: "0644"
+  loop: "{{ tooling_files.files }}"
+  loop_control:
+    label: "{{ item.path }}"
+  when:
+    - item.path != '/opt/tooling-source/html/functions.php'
+    - item.path != '/opt/tooling-source/html/README.md'
+  notify: Reload Apache

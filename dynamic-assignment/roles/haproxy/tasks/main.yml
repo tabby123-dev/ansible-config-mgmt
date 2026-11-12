@@ -1,0 +1,31 @@
+
+---
+- name: Verify Ubuntu operating system
+  ansible.builtin.assert:
+    that:
+      - ansible_distribution == "Ubuntu"
+    fail_msg: "This HAProxy role requires Ubuntu"
+
+- name: Install HAProxy
+  ansible.builtin.apt:
+    name: haproxy
+    state: present
+    update_cache: true
+
+- name: Deploy HAProxy configuration
+  ansible.builtin.template:
+    src: haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+    owner: root
+    group: root
+    mode: "0644"
+    backup: true
+    validate: "/usr/sbin/haproxy -c -f %s"
+  notify: Reload HAProxy
+
+- name: Ensure HAProxy is running
+  ansible.builtin.service:
+    name: haproxy
+    state: started
+    enabled: true
+

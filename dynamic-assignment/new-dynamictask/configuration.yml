@@ -1,0 +1,22 @@
+---
+- name: Demonstrate static and dynamic assignments
+  hosts: all
+  gather_facts: true
+
+  tasks:
+    - name: Static task assignment
+      ansible.builtin.import_tasks: tasks/static.yml
+
+    - name: Dynamic task assignment
+      ansible.builtin.include_tasks: tasks/dynamic.yml
+      vars:
+        target_service: >-
+          {%- if ansible_distribution == 'Ubuntu' -%}
+          haproxy
+          {%- elif 'dbservers' in group_names -%}
+          mysqld
+          {%- elif 'webservers' in group_names -%}
+          httpd
+          {%- else -%}
+          unknown
+          {%- endif -%}

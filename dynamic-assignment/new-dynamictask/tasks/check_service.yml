@@ -1,0 +1,6 @@
+---
+- name: Display expected service
+  ansible.builtin.debug:
+    msg: >-
+      Host {{ inventory_hostname }}
+      is expected to run {{ expected_service }}

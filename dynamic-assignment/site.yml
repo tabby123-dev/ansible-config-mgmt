@@ -1,0 +1,24 @@
+---
+- name: Configure MySQL database server
+  hosts: dbservers
+  become: true
+
+  tasks:
+    - name: Install and configure MySQL using Galaxy role
+      ansible.builtin.include_role:
+        name: geerlingguy.mysql
+
+- name: Deploy tooling website to PROD and UAT
+  hosts: webservers
+  become: true
+
+  tasks:
+    - name: Show deployment environment
+      ansible.builtin.debug:
+        msg: >-
+          Deploying {{ tooling_environment }}
+          to {{ inventory_hostname }}
+
+    - name: Dynamically assign tooling role
+      ansible.builtin.include_role:
+        name: "{{ tooling_role }}"

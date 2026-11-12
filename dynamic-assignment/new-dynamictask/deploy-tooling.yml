@@ -1,0 +1,42 @@
+
+---
+- name: Deploy Tooling application using dynamic roles
+  hosts: webservers
+  become: true
+  gather_facts: true
+  serial: 1
+
+  pre_tasks:
+    - name: Load UAT environment variables
+      ansible.builtin.include_vars:
+        file: "../group_vars/uat.yml"
+      when: "'uat' in group_names"
+
+    - name: Load production environment variables
+      ansible.builtin.include_vars:
+        file: "../group_vars/prod.yml"
+      when: "'prod' in group_names"
+
+    - name: Verify deployment variables
+      ansible.builtin.assert:
+        that:
+          - tooling_role is defined
+          - tooling_role == "tooling_web"
+          - tooling_version is defined
+          - tooling_environment is defined
+          - tooling_database is defined
+        fail_msg: "Required Tooling deployment variables are missing"
+
+    - name: Display deployment target
+      ansible.builtin.debug:
+        msg:
+          - "Host: {{ inventory_hostname }}"
+          - "Environment: {{ tooling_environment }}"
+          - "Branch: {{ tooling_version }}"
+          - "Database: {{ tooling_database }}"
+          - "Role: {{ tooling_role }}"
+
+  tasks:
+    - name: Dynamically include Tooling deployment role
+      ansible.builtin.include_role:
+        name: "{{ tooling_role }}"

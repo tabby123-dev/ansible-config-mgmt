@@ -1,0 +1,36 @@
+
+---
+- name: Repair PHP MySQL support on Web2
+  hosts: Web2
+  become: true
+  gather_facts: true
+
+  tasks:
+    - name: Install PHP MySQL extension
+      ansible.builtin.dnf:
+        name: php-mysqlnd
+        state: present
+      register: mysql_driver
+
+    - name: Restart PHP-FPM after installing extension
+      ansible.builtin.service:
+        name: php-fpm
+        state: restarted
+      when: mysql_driver.changed
+
+    - name: Verify PHP modules
+      ansible.builtin.command:
+        cmd: php -m
+      register: php_modules
+      changed_when: false
+
+    - name: Confirm MySQL extensions are available
+      ansible.builtin.assert:
+        that:
+          - "'mysqli' in php_modules.stdout_lines"
+          - "'pdo_mysql' in php_modules.stdout_lines"
+        fail_msg: "PHP MySQL extensions are missing"
+
+    - name: Display success message
+      ansible.builtin.debug:
+        msg: "Web2 PHP MySQL extensions installed successfully"

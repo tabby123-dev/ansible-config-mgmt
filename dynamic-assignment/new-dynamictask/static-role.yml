@@ -1,0 +1,9 @@
+---
+- name: Demonstrate static role assignment
+  hosts: all
+  gather_facts: true
+
+  tasks:
+    - name: Import common role statically
+      ansible.builtin.import_role:
+        name: common

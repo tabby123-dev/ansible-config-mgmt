@@ -1,0 +1,10 @@
+---
+- name: Configure Ubuntu HAProxy load balancer
+  hosts: loadbalancer
+  become: true
+  gather_facts: true
+
+  tasks:
+    - name: Dynamically include HAProxy role
+      ansible.builtin.include_role:
+        name: haproxy

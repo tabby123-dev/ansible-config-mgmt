@@ -1,0 +1,16 @@
+---
+- name: Display managed server information
+  ansible.builtin.debug:
+    msg: >-
+      Common role executing on {{ inventory_hostname }}
+      running {{ ansible_distribution }}
+      {{ ansible_distribution_version }}
+
+- name: Display server IP address
+  ansible.builtin.debug:
+    msg: >-
+      Server {{ inventory_hostname }}
+      has IP {{ ansible_default_ipv4.address | default('unknown') }}
+
+- name: Verify server connectivity
+  ansible.builtin.ping:

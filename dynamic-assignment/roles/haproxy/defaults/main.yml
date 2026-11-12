@@ -1,0 +1,11 @@
+---
+haproxy_frontend_port: 8081
+
+haproxy_backend_servers:
+  - name: Web1
+    address: 10.0.1.229
+    port: 80
+
+  - name: Web2
+    address: 10.0.1.136
+    port: 80

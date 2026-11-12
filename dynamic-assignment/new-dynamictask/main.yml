@@ -1,0 +1,3 @@
+---
+- name: Import configuration assignment
+  ansible.builtin.import_playbook: configuration.yml

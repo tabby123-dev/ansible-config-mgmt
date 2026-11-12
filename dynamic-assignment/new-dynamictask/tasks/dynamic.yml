@@ -1,0 +1,6 @@
+---
+- name: Display the service assigned to this host
+  ansible.builtin.debug:
+    msg: >-
+      {{ inventory_hostname }} is assigned
+      service {{ target_service }}

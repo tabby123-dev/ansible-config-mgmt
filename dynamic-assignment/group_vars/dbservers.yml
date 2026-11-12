@@ -1,0 +1,19 @@
+---
+mysql_daemon: mysqld
+
+mysql_packages:
+  - mysql-server
+mysql_log_error: /var/log/mysqld.log
+mysql_pid_file: /var/lib/mysql/mysqld.pid
+
+mysql_bind_address: "10.0.1.29"
+mysql_port: "3306"
+
+mysql_databases:
+  - name: tooling_prod
+    encoding: utf8mb4
+    collation: utf8mb4_unicode_ci
+
+  - name: tooling_uat
+    encoding: utf8mb4
+    collation: utf8mb4_unicode_ci

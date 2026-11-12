@@ -1,0 +1,20 @@
+---
+- name: Demonstrate static and dynamic assignments
+  hosts: all
+  gather_facts: true
+
+  tasks:
+    - name: Static import of OS verification
+      ansible.builtin.import_tasks: tasks/check_os.yml
+
+    - name: Dynamically include service verification
+      ansible.builtin.include_tasks: tasks/check_service.yml
+      vars:
+        expected_service: >-
+          {% if inventory_hostname in groups['webservers'] %}
+          httpd
+          {% elif inventory_hostname in groups['dbservers'] %}
+          mysqld
+          {% else %}
+          haproxy
+          {% endif %}

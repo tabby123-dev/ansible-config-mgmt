@@ -1,0 +1,30 @@
+
+global
+    log /dev/log local0
+    log /dev/log local1 notice
+    user haproxy
+    group haproxy
+    daemon
+    maxconn 2000
+
+defaults
+    log global
+    mode http
+    option httplog
+    option dontlognull
+    timeout connect 5s
+    timeout client 50s
+    timeout server 50s
+
+frontend tooling_frontend
+    bind *:{{ haproxy_frontend_port }}
+    default_backend tooling_backend
+
+backend tooling_backend
+    balance roundrobin
+    option httpchk
+    http-check send meth GET uri /login.php
+    http-check expect status 200
+{% for server in haproxy_backend_servers %}
+    server {{ server.name }} {{ server.address }}:{{ server.port }} check inter 3s fall 3 rise 2
+{% endfor %}

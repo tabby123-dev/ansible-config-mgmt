@@ -1,0 +1,5 @@
+---
+tooling_repo: "https://github.com/tabby123-dev/tooling-solution.git"
+tooling_version: main
+tooling_deploy_path: /var/www/html
+tooling_environment: production
