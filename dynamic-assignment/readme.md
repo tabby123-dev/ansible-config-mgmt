@@ -4,9 +4,9 @@
 Automate a PHP Tooling application  using **static Ansible imports**, **dynamic task/role inclusion**, a Galaxy community role, shared NFS storage and HAProxy. OCI instances were provisioned before the exercise; the work focused on configuration and deployment.
 
 
-## 1. Architecture and current state
+##  Architecture and current state
 
-![Original reference architecture](screenshot/architecture.jpeg)
+
 
 | Host | OS | Private IP | Function |
 |---|---|---|---|
